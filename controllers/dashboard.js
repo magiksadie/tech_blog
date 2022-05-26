@@ -8,7 +8,10 @@ router.get('/', withAuth, (req, res) => {
         where: {
             user_id: req.session.user_id,
         },
-        attributes: ['id', 'title', 'comment_content', 'created_at'],
+        attributes: ['id', 'title', 'comment_content', 'created_at'
+    [
+        sequelize.literal('(SELECT COUNT(*) FROM comment WHERE comment.post_id = post.id)')
+    ]],
         include: {
             model: User,
             attributes: ['username'],
