@@ -1,0 +1,40 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Tech Blog</title>
+        <link rel="stylesheet" href="/stylesheets/style.css" />
+    </head>
+
+    <body>
+        <div class="wrapper">
+        <header>
+            <nav>
+            {{#if loggedIn}}
+                <a class="home" href="/">Home</a>
+                <a class="dash-btn" href="/dashboard">Your Dashboard</a>
+                <a id="logout" href="" class="logout">Logout</a>
+            {{else}}
+                <a class="login-btn" href="../login">Login</a>
+            {{/if}}
+            </nav>
+        </header>
+        <div class="site-row">
+            <div class="site-name">
+            <h2>Tech Blog</h2>
+            </div>
+        </div>
+        <main>
+            {{{body}}}
+        </main>
+        <footer>
+            Thanks for joining the Tech Talk!
+        </footer>
+        </div>
+
+        {{#if loggedIn}}
+        <script src="/javascript/logout.js"></script>
+        {{/if}}
+    </body>
+
+</html>
