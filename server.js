@@ -1,4 +1,5 @@
 const path = require('path');
+const Controller = require('./controllers');
 const express = require('express');
 const sequelize = require('./config/connection');
 const helpers = require('./config/connection');
@@ -28,8 +29,7 @@ app.use(session(sess));
 app.use(express.static((path.join(__dirname, "public"))));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
-app.use(require('./controllers/'));
+app.use(Controller);
 
 sequelize.sync({ force: false }).then(function() {
     app.listen(PORT, function() {
