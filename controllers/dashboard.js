@@ -6,74 +6,46 @@ const withAuth = require('../utils/auth');
 router.get('/', withAuth, (req, res) => {
     Post.findAll({
         where: {
-            user_id: req.session.user_id,
-        },
-        attributes: ['id', 'title', 'comment_content', 'created_at'
-    [
-        sequelize.literal('(SELECT COUNT(*) FROM comment WHERE comment.post_id = post.id)')
-    ]],
-        include: {
-            model: User,
-            attributes: ['username'],
-        },
-    },
-    {
-        model: User,
-        attributes: ['username'],
+            user_id: req.session.userId,
+        }
     }).then(dbPostData => {
         const posts = dbPostData.map((post) => 
             post.get({ plain: true }));
-
-            res.render('dashboard', {
-                posts,
-                loggedIn: req.session.loggedIn,
-                });
+        res.render('dashboard', {
+            posts,
+            loggedIn: req.session.loggedIn,
+        });
     }).catch(err => {
         console.log(err);
         res.status(500).json(err);
     });
 });
 
-router.get('edit/:id', withAuth, (req, res) => {
+//Edit Post
+router.get('/edit/:id', withAuth, (req, res) => {
     Post.findOne({
         where: {
             id: req.params.id,
-        },
-        attributes: ['id', 'comment_text', 'body_content', 'created_at'],
-        include: [ 
-            {
-                model: Comment,
-                attributes: ['id', 'comment_content', 'post_id', 'user_id', 'created_at'],
-                include: {
-                    model: User,
-                    attributes: ['username'],
-                },
-            },
-            {
-                model: User,
-                attributes: ['username'],
-            },
-        ],
+            user_id: req.session.userId,
+        }
     }).then(dbPostData => {
         if (!dbPostData) {
             res.status(404).json({ message: 'No post found with this id' });
             return;
         }
-        const post = dbPostData.get({ plain: true });
-        res.render('edit', {
-            post,
-            loggedIn: req.session.loggedIn,
+        res.render('editPost', {
+            post: dbPostData,
         });
     }).catch(err => {
         console.log(err);
         res.status(500).json(err);
     });
-
-    router.get('/new', (req, res) => {
-        res.render('add-post', {
-            loggedIn: req.session.loggedIn,
-        });
-    });
 });
+
+//New Post
+router.get('/new', withAuth, (req, res) => {
+    res.render('addPost');
+});
+
 
 module.exports = router;
