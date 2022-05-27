@@ -3,6 +3,10 @@ const res = require('express/lib/response');
 const sequelize = require('../config/connection');
 const { User, Post, Comment } = require('../models');
 
+router.get('/login', (req, res) => {
+    res.render('login');
+});
+
 router.get('/', (req, res) => {
     Post.findAll({
         attributes: ['id', 'title', 'body_content', 'created_at'],
