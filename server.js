@@ -2,7 +2,7 @@ const path = require('path');
 const Controller = require('./controllers');
 const express = require('express');
 const sequelize = require('./config/connection');
-const helpers = require('./config/connection');
+const helpers = require('./utils/helpers');
 const exphbs = require('express-handlebars');
 const hbs = exphbs.create({helpers});
 const session = require('express-session');
@@ -31,10 +31,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(Controller);
 
-sequelize.sync({ force: false }).then(function() {
-    app.listen(PORT, function() {
-        console.log(`Now listening on port ${PORT}`);
-    });
+app.listen(PORT, function() {
+    sequelize.sync();
+    console.log(`Now listening on port ${PORT}`);
 });
 
 module.exports = app;
