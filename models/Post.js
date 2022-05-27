@@ -1,28 +1,10 @@
 const {Model, DataTypes} = require('sequelize');
 const sequelize = require('../config/connection');
 
-class Post extends Model {
-    static async getAllPosts() {
-        return await this.findAll();
-    }
-
-    static async getPostById(id) {
-        return await this.findByPk(id);
-    }
-
-    static async addPost(newPostData) {
-        return await this.create(newPostData);
-    }
-}
+class Post extends Model {};
 
 Post.init(
     {
-        id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            primaryKey: true,
-            autoIncrement: true,
-        },
         title: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -33,32 +15,26 @@ Post.init(
         body_content: {
             type: DataTypes.STRING,
             allowNull: false,
+            validate: {
+                len: [1, 500],
+            },
         },
         user_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'user',
+                model: 'User',
                 key: 'id',
             },
         },
-        created_at: {
-            type: DataTypes.DATE,
-            defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
-            allowNull: false,
-        },
-        updated_at: {
-            type: DataTypes.DATE,
-            defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
-            allowNull: false,
-        },
     },
-        {
-            sequelize,
-            freezeTableName: true,
-            underscored: true,
-            modelName: 'post',
-        }
-);
+    {
+        sequelize,
+        timestamps: true,
+        freezeTableName: true,
+        underscored: true,
+        modelName: 'post',
+    }
+)
 
 module.exports = Post;
