@@ -36,7 +36,7 @@ router.post('/', withAuth, (req, res) => {
     Post.create({
         title: req.body.title,
         body_content: req.body.body_content,
-        user_id: req.session.user_id,
+        user_id: req.session.userId,
     })
         .then((dbPostData) => res.json(dbPostData))
         .catch((err) => {
@@ -59,7 +59,7 @@ router.put('/:id', withAuth, (req, res) => {
     )
         .then((dbPostData) => res.json(dbPostData))
         .catch((err) => {
-            console.log(err);
+            //console.log(err);
             res.status(500).json(err);
         });
 });
