@@ -9,7 +9,7 @@
     <ul class="post-list">
         {{#each posts as |post|}}
         <li>
-            {{> post-info post}}
+            {{> postInfo post}}
             <a href="/dashboard/edit/{{post.id}}" class="edit-link">Edit Post</a>
         </li>
         {{/each}}
@@ -17,4 +17,4 @@
 </section>
 {{/if}}
 
-<script src="/javascript/create-post.js"></script>
+<script src="../javascript/createPost.js"></script>
